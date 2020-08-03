@@ -1,0 +1,272 @@
+:root {
+	--top:#3014AC;
+	--bg:#5821E5;
+
+	color:white;
+	background:#E0E0E0;
+	font-family: 'Roboto', sans-serif;
+}
+
+html, body {
+	line-height:unset;
+}
+
+body {
+	margin:0;
+	width:100vw;
+	height:100vh;
+
+	display:flex;
+	flex-direction:column;
+	overflow:hidden;
+}
+
+/* Header */
+header {
+	background:var(--bg);
+	box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+header h1 {
+	margin:0;
+	padding:10px;
+	height:26px;
+
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	gap:10px;
+
+	font-size:24px;
+	font-variant-caps: small-caps;
+
+	background:var(--top);
+}
+header h1 img {
+	width:24px;
+}
+nav {
+	padding:5px;
+
+	display:flex;
+	justify-content:flex-end;
+
+}
+
+/* Main */
+main {
+	flex:1;
+
+	display:flex;
+	overflow: hidden;
+}
+main #left {
+	flex:1;
+	height:100%;
+
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+main #right {
+	height:100%;
+
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+/* Footer */
+footer {
+	padding:10px;
+
+	display:flex;
+	justify-content:center;
+	gap:10px;
+
+	background:var(--top);
+	box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+footer .larger i {
+	font-size:36px !important;
+	transform: translate(-18px,-12px) !important;
+}
+
+/* Aside */
+aside {
+	margin:20px;
+	min-width:250px;
+	min-height:400px;
+
+	background:var(--bg);
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+	display:flex;
+	flex-direction:column;
+}
+
+aside .top {
+	padding:5px;
+
+	display:flex;
+	justify-content:space-between;
+
+	font-size:20px;
+	text-indent:5px;
+	line-height:32px;
+	background:var(--top)
+}
+aside .top .close {
+	width:16px;
+	height:16px;
+	padding:0;
+}
+
+aside .body {
+	flex:1;
+
+	padding:5px;
+
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:space-around;
+}
+
+/* Camera Settings */
+aside#cam { background:white; }
+aside#cam .body { color:black; }
+#cam_blinkyness_bg {
+	position:relative;
+	width:100%;
+	height:2px;
+	margin:5px 10px;
+
+	border-radius:1px;
+	background:#E0E0E0;
+}
+#cam_blinkyness {
+	position:absolute;
+	left:50%;
+	width:50%;
+	height:2px;
+
+	border-radius:1px;
+	background:var(--top);
+	transform-origin:left;
+	transform:scaleX(0);
+}
+.slider_container {
+	width:100%;
+
+	display:flex;
+	align-items:center;
+	gap:10px;
+}
+.slider_container span {
+	flex:3;
+}
+.slider_container .mdl-slider__container {
+	flex:7;
+	margin: 0px -26px;
+}
+
+
+/* book */
+#book {
+	position:relative;
+	width:400px;
+	height:300px;
+
+	font-size:8px;
+	background:white;
+
+	box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+	transform-style:preserve-3d;
+	perspective:120vw;
+	z-index:10000;
+}
+
+.page {
+	position:absolute;
+	width:50%;
+	height:100%;
+
+	overflow:hidden;
+
+	transform:rotateY(0deg);
+	transition:transform .125s linear;
+}
+
+/* Page Left Right */
+.page.l {
+	transform-origin:center right;
+}
+.page.r {
+	transform-origin:center left;
+	left:50%;
+}
+.page.l.turned { transform:rotateY(90deg); }
+.page.r.turned { transform:rotateY(-90deg); }
+
+/* Page Types */
+.page-text {
+	padding:2%;
+	box-sizing:border-box;
+
+	color:black;
+
+	background:url(https://image.freepik.com/free-photo/white-paper-canvas-texture-background-design-backdrop-overlay-design_1962-68.jpg);
+	background-size:cover;
+
+}
+.page-text.l .page-number {
+	float:left;
+	font-family:monospace;
+	font-size:0.75em;
+
+	transform:translate(-50%, -25%);
+}
+.page-text.r .page-number {
+	float:right;
+	font-size:0.75em;
+	font-family:monospace;
+
+	transform:translate( 50%, -25%);
+}
+.page-text p {
+	font-family:"Merriweather";
+	font-size:1em;
+	text-align:justify;
+}
+.page-text p::first-letter {
+	font-size:1.1em;
+}
+.page-text .quoted::before { content: open-quote; }
+.page-text .quoted::after  { content: close-quote; }
+
+.page-front {
+	padding:5%;
+	box-sizing:border-box;
+
+	color:black;
+	font-size:2.5em;
+	text-align:center;
+
+	background:url(https://image.freepik.com/free-photo/white-paper-canvas-texture-background-design-backdrop-overlay-design_1962-68.jpg);
+	background-size:cover;			
+}
+.page-front .byline {
+	font-size:.5em;
+	opacity:50%;
+}
+
+.page-tutorial, .page-end {
+	padding:2%;
+	border:5px solid transparent;
+	box-sizing:border-box;
+
+	font-size:1.25em;
+
+	background:var(--bg);
+	background-clip:padding-box;
+}

@@ -1,0 +1,91 @@
+<head>
+	<title>Jeeliz ML thingy test</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<style type="text/css">
+		body
+		{
+			background-color:#121212;
+			color:#aaa;
+			font-size:12px;
+		}
+	</style>
+	<script src="jeelizFaceTransfer.js"></script>
+	<script src="jeelizFaceTransferNNC.js"></script>
+	<script src="ml.js"></script>
+	<script>
+		// http://indiegamr.com/generate-repeatable-random-numbers-in-js/
+		function number_to_color(number) {
+			let col = "#"
+			
+			for (let i=0; i < 3; i++) {
+				number = (number * 9301 + 49297) % 233280
+				col += Math.round(number / 233280 * 255).toString(16)
+			}
+			return col
+		}
+
+		function debug_floats_on_canvas(canvas_id, floats, offset = 0) {
+			let canvas = document.getElementById(canvas_id)
+			let ctx = canvas.getContext("2d")
+			let w = canvas.width
+			let h = canvas.height
+
+			ctx.clearRect(0,0, w,h);
+
+			if (!floats) { return }
+			let bar_w = w/floats.length
+
+
+			floats.map((morph, i) => {
+				ctx.fillStyle = number_to_color(i + offset)
+				ctx.fillRect(bar_w*i,0, bar_w,h*morph)
+
+				ctx.fillStyle += "20" // 12.5% transparency
+				ctx.fillRect(bar_w*i,h*morph, bar_w,h-h*morph)
+			})
+		}
+
+		window.onload = ()=>{
+			let morphs_smoother = jeeliz_smoothed_morphs("debug_jeeliz")
+
+			let edge_l = new EdgeTrigger(250, 0.1, 0.2)
+			let edge_r = new EdgeTrigger(250, 0.1, 0.2)
+			let edge_l_dbg = 0
+			let edge_r_dbg = 0
+
+
+			function rafcb() {
+				edge_l_dbg = Math.max(0, edge_l_dbg-0.01) 
+				edge_r_dbg = Math.max(0, edge_r_dbg-0.01) 
+
+				if (morphs_smoother.has_vals()) {
+					let morphs = morphs_smoother.calc()
+
+					debug_floats_on_canvas("debug_morph", morphs)
+
+					let side = morph_side(morphs)
+					let left  = Math.max(0, side)
+					let right = Math.max(0, -side)
+
+					debug_floats_on_canvas("debug_side", [left, right])
+
+					if (edge_l.process_sample(left)) { edge_l_dbg = 1 }
+					if (edge_r.process_sample(right)) { edge_r_dbg = 1 }
+
+					debug_floats_on_canvas("debug_edge", [edge_l_dbg, edge_r_dbg])
+				}
+
+				requestAnimationFrame(rafcb)
+			}
+			requestAnimationFrame(rafcb)
+		}
+	</script>
+</head>
+<body>
+	<canvas id="debug_jeeliz"></canvas>
+	<canvas id="debug_raw"></canvas>
+	<canvas id="debug_morph"></canvas>
+	<canvas id="debug_side"></canvas>
+	<canvas id="debug_edge"></canvas>
+</body>

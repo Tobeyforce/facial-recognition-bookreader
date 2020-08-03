@@ -1,0 +1,129 @@
+<head>
+	<meta charset="utf8"/>
+	<!-- Live reload -->
+	<script>document.write('<script src="http://'+(location.host || 'localhost').split(':')[0]+':35729/livereload.js?snipver=1"><'+'/script>')</script>
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Roboto&display=swap" rel="stylesheet">
+	<!-- Material Design Light -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-deep_purple.min.css">
+	<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+	<!-- JeelizWeboji -->
+	<script src="/js/jeelizFaceTransfer.js"></script>
+	<script src="/js/jeelizFaceTransferNNC.js"></script>
+	<!-- Our libraries -->
+	<script src="/js/ml.js"></script>
+	<script src="/js/book.js"></script>
+	<!-- Main files -->
+	<link rel="stylesheet" href="/styles/main.css">
+	<script src="/js/main.js"></script>
+</head>
+<body>
+	<template id="tmpl-page-tutorial">
+		<div style="float:right">
+			<img style="height:2em" src="/styles/assets/pageflipwhiteright.png"/>
+			<img style="height:2em" src="/styles/assets/rightwink.png"/><br/>
+			<img style="height:2em" src="/styles/assets/pageflipwhiteleft.png"/>
+			<img style="height:2em" src="/styles/assets/leftwink.png"/>
+		</div>
+		Welcome to the magic book reader!<br/>
+		You can read a book using only your eyes!<br/>
+		Flip the pages by blinking with your left or right eye, you can also use a mouse or keyboard if you prefer that!
+	</template>
+	<template id="tmpl-page-front">
+		${title}<br/>
+		<span class="byline">by <b>${author}</b></span>
+	</template>
+	<template id="tmpl-page-text">
+		<span class="page-number">${num}</span>
+		${content}
+	</template>
+	<template id="tmpl-page-end">
+		Thank you for trying out the <img style="height:1.25em;" src="/styles/assets/logowhite.png"/> magic book reader!<br/>
+		This app was created by Tobias Fors and Martin Söderman
+	</template>
+
+	<header>
+		<h1>
+			<img src="/styles/assets/logowhite.png"/>
+			Magic Book Reader
+		</h1>
+		<nav>
+			<button id="help_toggle" class="mdl-button mdl-js-button mdl-button--icon" style="display:none;" onclick="tut_toggle()">
+				<i class="material-icons">help</i>
+			</button>
+			<button class="mdl-button mdl-js-button mdl-button--icon" onclick="cam_toggle()">
+				<i class="material-icons">videocam</i>
+			</button>
+		</nav>
+	</header>
+	<main>
+		<div id="left">
+			<div id="book"></div>
+		</div>
+		<div id="right">
+			<aside id="help" style="display:none;">
+				<div class="top">
+					Help
+					<button onclick="close_window()" class="mdl-button mdl-js-button mdl-button--icon">
+						<i class="material-icons">close</i>
+					</button>
+				</div>
+				<div class="body">
+					<img src="/styles/assets/rightwink.png" width="125" />
+					<p>Blink using your right eye<br/> to go to the next page</p>
+					<img src="/styles/assets/leftwink.png"  width="125" />
+					<p>Blink using your left eye<br/> to go to the previous page</p>
+				</div>
+			</aside>
+			<aside id="cam" style="display:none;">
+				<div class="top">
+					Camera
+					<button onclick="close_window()" class="mdl-button mdl-js-button mdl-button--icon">
+						<i class="material-icons">close</i>
+					</button>
+				</div>
+				<div class="body">
+					<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch_cam">
+						<input autocomplete="off" onchange="cam_apply()" type="checkbox" id="switch_cam" class="mdl-switch__input" checked>
+						<span class="mdl-switch__label">Enabled</span>
+					</label>
+
+					<canvas id="debug_jeeliz"></canvas>
+					<div id="cam_blinkyness_bg">
+						<div id="cam_blinkyness"></div>
+					</div>
+					
+					<div class="slider_container">
+						<span>Offset</span>
+						<input autocomplete="off" id="cam_offset" onchange="cam_apply()" class="mdl-slider mdl-js-slider" type="range" min="0" max="100" value="50"/>
+					</div>
+	
+					<div class="slider_container">
+						<span>Left Multiplier</span>
+						<input autocomplete="off" id="cam_lmul" onchange="cam_apply()" class="mdl-slider mdl-js-slider" type="range" min="0" max="100" value="50"/>
+					</div>
+
+					<div class="slider_container">
+						<span>Right Multiplier</span>
+						<input autocomplete="off" id="cam_rmul" onchange="cam_apply()" class="mdl-slider mdl-js-slider" type="range" min="0" max="100" value="50"/>
+					</div>
+				</div>
+			</aside>
+		</div>
+	</main>
+	<footer>
+		<button class="mdl-button mdl-js-button mdl-button--icon" onclick="firstSpread()">
+			<i class="material-icons">first_page</i>
+		</button>
+		<button class="larger mdl-button mdl-js-button mdl-button--icon" onclick="prevSpread()">
+			<i class="material-icons">keyboard_arrow_left</i>
+		</button>
+		<button class="larger mdl-button mdl-js-button mdl-button--icon" onclick="nextSpread()">
+			<i class="material-icons md-36">keyboard_arrow_right</i>
+		</button>
+		<button class="mdl-button mdl-js-button mdl-button--icon" onclick="lastSpread()">
+			<i class="material-icons">last_page</i>
+		</button>
+	</footer>
+</body>
